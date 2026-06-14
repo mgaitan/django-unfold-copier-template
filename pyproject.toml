@@ -1,0 +1,31 @@
+[project]
+name = "django-unfold-copier-template"
+version = "0.1.0"
+description = "Copier template for minimalist internal Django applications powered by django-unfold."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "copier>=9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.8",
+]
+docs = [
+    "myst-parser>=4",
+    "sphinx>=8",
+    "furo>=2024.8.6",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "DJ"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

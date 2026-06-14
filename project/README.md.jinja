@@ -1,0 +1,53 @@
+# {{ project_name }}
+
+{{ project_description }}
+
+This project was generated with
+[`mgaitan/django-unfold-copier-template`](https://github.com/mgaitan/django-unfold-copier-template).
+
+## Stack
+
+- Django
+- django-unfold
+- uv
+- pytest-django
+- Ruff
+- WhiteNoise
+
+## First Run
+
+```bash
+cp .env.example .env
+make install
+make migrate
+make seed
+make run
+```
+
+Open <http://127.0.0.1:8000/>. The root URL redirects to the private Unfold
+admin.
+
+Demo credentials if `make seed` was used:
+
+```text
+admin / admin123
+```
+
+## Main URLs
+
+- `/`: redirects to `/admin/`
+- `/admin/`: Unfold admin, application shell, and CRUD surface
+- `/admin/core/workitem/`: sample model list with filters and search
+
+## Quality Checks
+
+```bash
+make qa
+```
+
+## Design Notes
+
+This starter intentionally uses Django admin plus Unfold as the product surface
+for list/detail/create/update/delete, search, filters, permissions, and history.
+If a custom workflow is needed, keep it private and integrated with the admin
+instead of creating a separate frontend shell.

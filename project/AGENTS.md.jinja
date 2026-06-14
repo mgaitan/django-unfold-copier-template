@@ -1,0 +1,48 @@
+# Working with {{ project_name }}
+
+This is a Django internal management application generated from
+`mgaitan/django-unfold-copier-template`.
+
+## Project Shape
+
+- Django settings live in `{{ project_slug }}/config/settings/`.
+- The primary CRUD surface is Django admin styled with `django-unfold`.
+- `/` redirects to `/admin/`; the admin is the application shell.
+- The sample app is `{{ project_slug }}/apps/core/`.
+- Tests live in `{{ project_slug }}/tests/`.
+- Project-specific skills live in `.agents/skills/`.
+
+## Commands
+
+```bash
+make install
+make migrate
+make seed
+make run
+make qa
+```
+
+## Django Guidelines
+
+- Prefer Django admin + Unfold for model management before building custom CRUD.
+- Keep custom views private and integrated into the admin/Unfold experience.
+- Only the admin login should be public by default.
+- Keep settings environment-specific and avoid production secrets in git.
+- Use `select_related`/`prefetch_related` in admin querysets when adding relation-heavy models.
+- Add focused pytest coverage for model behavior, permissions, and custom views.
+
+## Unfold Guidelines
+
+- Admin classes should inherit from `unfold.admin.ModelAdmin`.
+- Use Unfold filters from `unfold.contrib.filters.admin` for compact changelists.
+- Keep the default light theme with brand color `{{ brand_color }}` unless the product identity changes.
+- Avoid enabling global overlays or command palettes unless explicitly requested.
+- When adding a model, register it in admin with `list_display`, `search_fields`, `list_filter`, and sensible fieldsets.
+
+## QA
+
+Before handing off changes, run:
+
+```bash
+make qa
+```

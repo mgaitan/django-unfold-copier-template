@@ -1,0 +1,40 @@
+[project]
+name = "{{ repository_name }}"
+version = "0.1.0"
+description = "{{ project_description }}"
+readme = "README.md"
+requires-python = ">={{ python_version }}"
+dependencies = [
+    "dj-database-url>=3.0",
+    "django>=5.2,<6.1",
+    "django-unfold>=0.97",
+    "gunicorn>=23",
+    "python-dotenv>=1.0",
+    "whitenoise>=6.9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-django>=4.10",
+    "ruff>=0.8",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py{{ python_version | replace('.', '') }}"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "DJ"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"{{ project_slug }}/config/settings/*.py" = ["F403", "F405"]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "{{ project_slug }}.config.settings.test"
+python_files = ["test_*.py", "*_test.py", "tests.py"]
+testpaths = ["{{ project_slug }}/tests"]

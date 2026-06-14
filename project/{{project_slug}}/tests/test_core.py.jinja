@@ -1,0 +1,27 @@
+import pytest
+from django.urls import reverse
+
+from {{ project_slug }}.apps.core.models import WorkItem
+
+
+@pytest.mark.django_db
+def test_root_redirects_to_admin(client):
+    response = client.get(reverse('home'))
+
+    assert response.status_code == 302
+    assert response['Location'] == reverse('admin:index')
+
+
+@pytest.mark.django_db
+def test_admin_requires_login(client):
+    response = client.get(reverse('admin:index'))
+
+    assert response.status_code == 302
+    assert reverse('admin:login') in response['Location']
+
+
+@pytest.mark.django_db
+def test_work_item_str():
+    item = WorkItem.objects.create(code='OPS-1', title='Review workflow')
+
+    assert str(item) == 'OPS-1 - Review workflow'

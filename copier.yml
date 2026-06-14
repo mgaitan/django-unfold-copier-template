@@ -1,0 +1,93 @@
+# CONFIGURATION -------------------------
+_min_copier_version: "9"
+_envops:
+  autoescape: false
+  keep_trailing_newline: true
+_subdirectory: project
+_templates_suffix: .jinja
+_preserve_symlinks: true
+
+_tasks:
+  - when: "{{ not (defaults | default(false)) }}"
+    command: uv python pin {{ python_version }}
+  - when: "{{ not (defaults | default(false)) }}"
+    command: uv sync
+  - when: "{{ not (defaults | default(false)) }}"
+    command: uv run python manage.py migrate
+  - when: "{{ not (defaults | default(false)) and create_demo_data }}"
+    command: uv run python manage.py seed_demo
+  - when: "{{ not (defaults | default(false)) }}"
+    command: git init -b main
+  - when: "{{ not (defaults | default(false)) }}"
+    command: git add .
+  - when: "{{ not (defaults | default(false)) }}"
+    command: 'git commit -m "chore: initial commit"'
+
+# PROMPT --------------------------------
+project_name:
+  type: str
+  help: Human-friendly project name
+  default: "{{ _copier_conf.dst_path.name | replace('-', ' ') | title }}"
+
+project_slug:
+  type: str
+  help: Python/Django package name
+  default: "{{ project_name | lower | replace('-', '_') | replace(' ', '_') }}"
+
+project_description:
+  type: str
+  help: Short project description
+  default: "Internal management system powered by Django and Unfold"
+
+author_fullname:
+  type: str
+  help: Author full name
+  default: "Martín Gaitán"
+
+author_email:
+  type: str
+  help: Author email
+  default: "gaitan@gmail.com"
+
+repository_namespace:
+  type: str
+  help: GitHub username or organization
+  default: "mgaitan"
+
+repository_name:
+  type: str
+  help: Repository name
+  default: "{{ project_name | lower | replace(' ', '-') | replace('_', '-') }}"
+
+python_version:
+  type: str
+  help: Python version for uv
+  default: "3.12"
+
+django_secret_key:
+  type: str
+  help: Development SECRET_KEY
+  default: "django-insecure-change-me"
+
+brand_color:
+  type: str
+  help: Primary brand color for Unfold
+  default: "#00a651"
+
+timezone:
+  type: str
+  help: Django TIME_ZONE
+  default: "America/Argentina/Cordoba"
+
+language_code:
+  type: str
+  help: Default Django language
+  default: "en-us"
+  choices:
+    English: "en-us"
+    Español: "es-ar"
+
+create_demo_data:
+  type: bool
+  help: Seed demo admin and work items after first copy
+  default: true

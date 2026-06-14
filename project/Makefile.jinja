@@ -1,0 +1,42 @@
+.PHONY: install run migrate makemigrations check test lint format qa seed shell collectstatic help
+
+install: ## Install dependencies
+	@uv sync
+
+run: ## Run the development server
+	@uv run python manage.py runserver
+
+makemigrations: ## Create Django migrations
+	@uv run python manage.py makemigrations
+
+migrate: ## Apply Django migrations
+	@uv run python manage.py migrate
+
+check: ## Run Django system checks
+	@uv run python manage.py check
+
+test: ## Run pytest
+	@uv run pytest -q
+
+lint: ## Run Ruff checks
+	@uv run ruff check .
+
+format: ## Format with Ruff
+	@uv run ruff format .
+
+qa: lint check test ## Run local quality checks
+
+seed: ## Seed demo data
+	@uv run python manage.py seed_demo
+
+shell: ## Open Django shell
+	@uv run python manage.py shell
+
+collectstatic: ## Collect static assets
+	@uv run python manage.py collectstatic --noinput
+
+help: ## Show available targets
+	@uv run python -c "import re; \
+	[[print(f'\033[36m{m[0]:<20}\033[0m {m[1]}') for m in re.findall(r'^([a-zA-Z_.-]+):.*?## (.*)$$', open(makefile).read(), re.M)] for makefile in ('$(MAKEFILE_LIST)').strip().split()]"
+
+.DEFAULT_GOAL := help
