@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+env:
+  UV_MALWARE_CHECK: "1"
+
 jobs:
   smoke:
     runs-on: ubuntu-latest
@@ -29,7 +32,7 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Template lint
-        run: uv run ruff check .
+        run: uv run --group lint ruff check .
 
       - name: Template tests
         run: uv run pytest -q

@@ -1,3 +1,5 @@
+"""Seed the database with demonstration data."""
+
 from datetime import timedelta
 
 from django.contrib.auth import get_user_model
@@ -8,11 +10,14 @@ from {{ project_slug }}.apps.core.models import WorkItem
 
 
 class Command(BaseCommand):
+    """Create the demo administrator and work items."""
+
     help = 'Seed demo admin and work items'
 
-    def handle(self, *args, **options):
-        User = get_user_model()
-        user, created = User.objects.get_or_create(
+    def handle(self, *args: object, **options: object) -> None:
+        """Create demonstration records when they do not exist."""
+        user_model = get_user_model()
+        user, created = user_model.objects.get_or_create(
             username='admin',
             defaults={'email': 'admin@example.com', 'is_staff': True, 'is_superuser': True},
         )

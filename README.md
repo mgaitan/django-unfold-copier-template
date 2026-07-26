@@ -29,7 +29,8 @@ By default, the generated project includes:
 - Django admin as the application shell and primary CRUD surface.
 - A sample `WorkItem` model to demonstrate list, filters, search, and detail/edit views in admin.
 - Language selection at copy time, defaulting to English with Spanish available.
-- `uv`, `pytest-django`, Ruff, and a small Makefile.
+- Dependency cooldowns and malware checks through `uv`.
+- `pytest-django`, Ruff with a broad rule set including `flake8-django`, and a small Makefile.
 
 ## Local template development
 
