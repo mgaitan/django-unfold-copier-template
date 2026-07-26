@@ -1,26 +1,30 @@
 # CONFIGURATION -------------------------
-_min_copier_version: "9"
+_min_copier_version: "9.17.0"
 _envops:
   autoescape: false
   keep_trailing_newline: true
+  undefined: jinja2.StrictUndefined
 _subdirectory: project
 _templates_suffix: .jinja
 _preserve_symlinks: true
+_skip_if_exists:
+  - .python-version
+  - README.md
 
 _tasks:
-  - when: "{{ not (defaults | default(false)) }}"
+  - when: "{{ (not (defaults | default(false))) and ((_copier_operation | default('copy')) != 'update') }}"
     command: uv python pin {{ python_version }}
-  - when: "{{ not (defaults | default(false)) }}"
-    command: uv sync
-  - when: "{{ not (defaults | default(false)) }}"
+  - when: "{{ (not (defaults | default(false))) and ((_copier_operation | default('copy')) != 'update') }}"
+    command: UV_MALWARE_CHECK=1 uv sync
+  - when: "{{ (not (defaults | default(false))) and ((_copier_operation | default('copy')) != 'update') }}"
     command: uv run python manage.py migrate
-  - when: "{{ not (defaults | default(false)) and create_demo_data }}"
+  - when: "{{ (not (defaults | default(false))) and ((_copier_operation | default('copy')) != 'update') and create_demo_data }}"
     command: uv run python manage.py seed_demo
-  - when: "{{ not (defaults | default(false)) }}"
+  - when: "{{ (not (defaults | default(false))) and ((_copier_operation | default('copy')) != 'update') }}"
     command: git init -b main
-  - when: "{{ not (defaults | default(false)) }}"
+  - when: "{{ (not (defaults | default(false))) and ((_copier_operation | default('copy')) != 'update') }}"
     command: git add .
-  - when: "{{ not (defaults | default(false)) }}"
+  - when: "{{ (not (defaults | default(false))) and ((_copier_operation | default('copy')) != 'update') }}"
     command: 'git commit -m "chore: initial commit"'
 
 # PROMPT --------------------------------

@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import pytest
 from django.urls import reverse
 
@@ -8,7 +10,7 @@ from {{ project_slug }}.apps.core.models import WorkItem
 def test_root_redirects_to_admin(client):
     response = client.get(reverse('home'))
 
-    assert response.status_code == 302
+    assert response.status_code == HTTPStatus.FOUND
     assert response['Location'] == reverse('admin:index')
 
 
@@ -16,7 +18,7 @@ def test_root_redirects_to_admin(client):
 def test_admin_requires_login(client):
     response = client.get(reverse('admin:index'))
 
-    assert response.status_code == 302
+    assert response.status_code == HTTPStatus.FOUND
     assert reverse('admin:login') in response['Location']
 
 

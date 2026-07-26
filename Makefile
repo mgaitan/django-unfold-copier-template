@@ -1,5 +1,7 @@
 .PHONY: install lint format test qa docs docs-open smoke help
 
+export UV_MALWARE_CHECK := 1
+
 DOCS_SOURCE := docs
 DOCS_BUILD := $(DOCS_SOURCE)/_build
 
@@ -7,10 +9,10 @@ install: ## Install template dependencies
 	@uv sync --all-groups
 
 lint: ## Run Ruff checks
-	@uv run ruff check .
+	@uv run --group lint ruff check .
 
 format: ## Format with Ruff
-	@uv run ruff format .
+	@uv run --group lint ruff format .
 
 test: ## Run template tests
 	@uv run pytest -q

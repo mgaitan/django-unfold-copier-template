@@ -1,5 +1,7 @@
 .PHONY: install run migrate makemigrations check test lint format qa seed shell collectstatic help
 
+export UV_MALWARE_CHECK := 1
+
 install: ## Install dependencies
 	@uv sync
 
@@ -19,10 +21,10 @@ test: ## Run pytest
 	@uv run pytest -q
 
 lint: ## Run Ruff checks
-	@uv run ruff check .
+	@uv run --group lint ruff check .
 
 format: ## Format with Ruff
-	@uv run ruff format .
+	@uv run --group lint ruff format .
 
 qa: lint check test ## Run local quality checks
 

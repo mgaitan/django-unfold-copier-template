@@ -1,15 +1,25 @@
+"""Core application models."""
+
+from typing import ClassVar
+
 from django.conf import settings
 from django.db import models
 
 
 class WorkItem(models.Model):
+    """A unit of operational work tracked through the admin."""
+
     class Status(models.TextChoices):
+        """Workflow states for a work item."""
+
         OPEN = 'open', 'Open'
         IN_PROGRESS = 'in_progress', 'In progress'
         BLOCKED = 'blocked', 'Blocked'
         DONE = 'done', 'Done'
 
     class Priority(models.TextChoices):
+        """Available work item priorities."""
+
         LOW = 'low', 'Low'
         MEDIUM = 'medium', 'Medium'
         HIGH = 'high', 'High'
@@ -31,7 +41,10 @@ class WorkItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-updated_at']
+        """Model metadata."""
 
-    def __str__(self):
+        ordering: ClassVar[list[str]] = ['-updated_at']
+
+    def __str__(self) -> str:
+        """Return the human-readable work item label."""
         return f'{self.code} - {self.title}'
